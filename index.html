@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" href="favicon.ico" />
+  <title>English Word Chain Game</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; padding: 20px; }
+    input { font-size: 16px; padding: 5px; }
+    button { padding: 5px 10px; margin: 5px; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 5px 0; }
+  </style>
+</head>
+<body>
+  <h1>English Word Chain</h1>
+
+  <div id="start-word-section">
+    <button onclick="startGameWithRandomWord()">Start with Random Word</button>
+    <button onclick="startGameManual()">Start Manually</button>
+  </div>
+
+  <div id="game-section" style="display: none;">
+    <p><strong>Previous word:</strong> <span id="previous-word"></span></p>
+    <input type="text" id="word-input" placeholder="Enter next word..." />
+    <button onclick="submitWord()">Submit</button>
+    <p id="timer"></p>
+    <p id="score">Score: 0</p>
+    <h3>Word Chain</h3>
+    <ul id="chain-list"></ul>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
