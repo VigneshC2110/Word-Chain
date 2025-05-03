@@ -5,7 +5,7 @@ let timer;
 let timeLimit = 60;
 
 function startGameWithRandomWord() {
-  fetch('https://random-word-api.herokuapp.com/word')
+  fetch('https://random-word-api.vercel.app/api?words=1')
     .then(res => res.json())
     .then(words => {
       const word = words[0].toLowerCase();
@@ -19,8 +19,9 @@ function startGameWithRandomWord() {
       });
     })
     .catch(err => {
-      alert("Failed to get a random word. Please try again.");
+      alert("Failed to get a random word. Starting manually instead.");
       console.error(err);
+      startGameManual(); 
     });
 }
 
