@@ -21,7 +21,7 @@ function startGameWithRandomWord() {
     .catch(err => {
       alert("Failed to get a random word. Starting manually instead.");
       console.error(err);
-      startGameManual(); 
+      startGameManual();
     });
 }
 
@@ -54,16 +54,22 @@ function beginGame() {
 function submitWord() {
   let input = document.getElementById("word-input");
   let newWord = input.value.trim().toLowerCase();
+  input.value = "";
 
   if (!newWord) return;
 
-  let lastChar = previousWord.slice(-1).toLowerCase();
-  let firstChar = newWord[0].toLowerCase();
+  if (newWord.length < 2) {
+    alert("The word must be at least 2 letters long.");
+    return;
+  }
 
   if (usedWords.includes(newWord)) {
     alert("This word has already been used!");
     return;
   }
+
+  let lastChar = previousWord.slice(-1).toLowerCase();
+  let firstChar = newWord[0].toLowerCase();
 
   if (firstChar !== lastChar) {
     alert(`The word must start with '${lastChar}'`);
@@ -72,22 +78,26 @@ function submitWord() {
 
   validateWord(newWord).then(isValid => {
     if (!isValid) {
-      alert("This word is not valid!");
+      alert("This word is not valid English. Try another.");
     } else {
       usedWords.push(newWord);
       previousWord = newWord;
       document.getElementById("previous-word").innerText = newWord;
       document.getElementById("chain-list").innerHTML += `<li>${newWord}</li>`;
-      input.value = "";
       score++;
       document.getElementById("score").innerText = `Score: ${score}`;
     }
+  }).catch(() => {
+    alert("There was an error checking the word. Try again.");
   });
 }
 
 function validateWord(word) {
   return fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`)
-    .then(res => res.ok)
+    .then(res => {
+      if (!res.ok) return false;
+      return res.json().then(data => Array.isArray(data));
+    })
     .catch(() => false);
 }
 
